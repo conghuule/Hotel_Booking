@@ -2,7 +2,7 @@ import { ConfigProvider } from 'antd';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import Router from 'routers/Router';
+import Router from 'routers/router';
 import { auth } from 'services/config';
 import { signin, signout } from 'store/authSlice';
 
