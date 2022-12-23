@@ -1,4 +1,4 @@
-import React from 'react';
+import { Form } from 'antd';
 import FilterField from './FilterField';
 
 const ROOM_TYPES = {
@@ -7,14 +7,8 @@ const ROOM_TYPES = {
 };
 const PRICES = {
   title: 'Price',
-  data: [
-    { minimum: 0, maximum: 1000000 },
-    { minimum: 1000000, maximum: 2000000 },
-    { minimum: 2000000, maximum: 3000000 },
-    { minimum: 3000000, maximum: 4000000 },
-    { minimum: 4000000, maximum: 5000000 },
-    { minimum: 5000000, maximum: undefined },
-  ],
+  min: 0,
+  max: 4000000,
 };
 const RATINGS = { title: 'Rating', data: [1, 2, 3, 4, 5] };
 const BED_TYPES = { title: 'Bed Type', data: ['Single Bed', 'Double Bed'] };
@@ -36,12 +30,17 @@ const ROOM_FACILITIES = {
 function Filter() {
   return (
     <div className="mr-4">
-      <FilterField data={ROOM_TYPES} />
-      <FilterField data={PRICES} />
-      <FilterField data={RATINGS} />
-      <FilterField data={BED_TYPES} />
-      <FilterField data={FACILITIES} />
-      <FilterField data={ROOM_FACILITIES} />
+      <h3 className="font-bold text-mainColor-150">Filter By</h3>
+      <Form.Provider onFormChange={(name, info) => console.log(info)}>
+        <Form>
+          <FilterField data={ROOM_TYPES} />
+          <FilterField data={PRICES} slider />
+          <FilterField data={RATINGS} />
+          <FilterField data={BED_TYPES} />
+          <FilterField data={FACILITIES} />
+          <FilterField data={ROOM_FACILITIES} />
+        </Form>
+      </Form.Provider>
     </div>
   );
 }

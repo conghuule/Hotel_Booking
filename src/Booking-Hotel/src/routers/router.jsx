@@ -1,6 +1,7 @@
 import MainLayout from 'layouts/MainLayout';
 import Home from 'pages/Home/Home';
 import NotFound from 'pages/NotFound/NotFound';
+import SearchResult from 'pages/SearchResult/SearchResult';
 import SignIn from 'pages/SignIn/SignIn';
 import SignUp from 'pages/SignUp/SignUp';
 import React from 'react';
@@ -26,6 +27,7 @@ export default function Router() {
         <Route element={<PrivateRoute />}>
           <Route index element={<Home />} />
           <Route path="home" element={<Home />} />
+          <Route path=":searchKey" element={<SearchResult />} />
         </Route>
         <Route element={<AuthRoute />}>
           <Route path="signin" element={<SignIn />} />
