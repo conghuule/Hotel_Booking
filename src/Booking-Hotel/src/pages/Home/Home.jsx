@@ -1,5 +1,11 @@
-import React from "react";
+import Filter from 'components/Filter';
+import React from 'react';
 
 export default function Home() {
-  return <div>Home</div>;
+  return (
+    <div className="flex">
+      <Filter />
+      <div>Home</div>
+    </div>
+  );
 }
