@@ -30,12 +30,15 @@ const FACILITIES = {
 };
 const ROOM_FACILITIES = {
   title: 'Room Facilities',
-  data: ['Private Bathroom', 'Air conditioner', 'Kitchen', 'Balcony', 'TV'],
+  data: ['Private bathroom', 'Air conditioner', 'Kitchen', 'Balcony', 'TV'],
 };
 
 function Filter() {
   return (
     <div className="mr-4">
+      <h3 className="text-[20px] mb-3 ml-4 font-bold text-mainColor-200">
+        Filter by:
+      </h3>
       <FilterField data={ROOM_TYPES} />
       <FilterField data={PRICES} />
       <FilterField data={RATINGS} />

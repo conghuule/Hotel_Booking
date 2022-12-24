@@ -20,7 +20,7 @@ function FilterField({ data = {} }) {
       return item;
     } else if (typeof item === 'number') {
       return (
-        <div className="flex gap-1 mt-[-2px]">
+        <div className="flex gap-1">
           {Array(item)
             .fill(0)
             .map((_, index) => (
@@ -49,8 +49,8 @@ function FilterField({ data = {} }) {
   console.log('Checked: ', checked);
 
   return (
-    <div className="p-3 mb-2 border-2 border-solid text-mainColor-150 border-mainColor-50 max-w-[240px] rounded-[4px] ">
-      <h4 className="font-bold">{data.title}</h4>
+    <div className="p-3 mb-2 border-2 border-solid  border-mainColor-150 max-w-[240px] rounded-[4px] ">
+      <h4 className="font-bold text-mainColor-200">{data.title}</h4>
 
       <ul className="mb-0 list-none">
         {data.data.map((item, index) => (
@@ -60,10 +60,10 @@ function FilterField({ data = {} }) {
             onClick={() => handleChecked(index)}
           >
             <Checkbox
-              className="pr-[6px] mt-[-4px] border-none cursor-pointer"
+              className="pr-[6px] mt-[-3px] border-none cursor-pointer"
               checked={checked.includes(index)}
             />
-            <label className="text-[14px] cursor-pointer">
+            <label className="text-[14px] cursor-pointer text-mainColor-150 hover:underline">
               {renderItemLabel(item)}
             </label>
           </li>

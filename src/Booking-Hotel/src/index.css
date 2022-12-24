@@ -12,5 +12,12 @@
 .ant-checkbox .ant-checkbox-inner {
   width: 20px;
   height: 20px;
-  border-color: #7ce8ff;
+  border-color: #00acdf;
+}
+.ant-checkbox .ant-checkbox-inner:hover {
+  border-color: #0080bf;
+}
+:where(.css-dev-only-do-not-override-izhxqj).ant-checkbox-checked
+  .ant-checkbox-inner:after {
+  transform: rotate(45deg) scale(1) translate(-30%, -60%);
 }
