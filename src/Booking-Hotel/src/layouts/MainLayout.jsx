@@ -7,7 +7,7 @@ export default function MainLayout() {
     <div className="min-h-screen flex flex-col ">
       <Header />
       <div className="flex justify-center flex-1">
-        <div className="container py-5">
+        <div className="container p-5">
           <Outlet />
         </div>
       </div>
