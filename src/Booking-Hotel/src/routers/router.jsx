@@ -27,7 +27,7 @@ export default function Router() {
         <Route element={<PrivateRoute />}>
           <Route index element={<Home />} />
           <Route path="home" element={<Home />} />
-          <Route path=":searchKey" element={<SearchResult />} />
+          <Route path="search/:searchKey" element={<SearchResult />} />
         </Route>
         <Route element={<AuthRoute />}>
           <Route path="signin" element={<SignIn />} />

@@ -29,18 +29,16 @@ const ROOM_FACILITIES = {
 
 function Filter() {
   return (
-    <div className="mr-4">
+    <div className="w-full">
       <h3 className="font-bold text-mainColor-150">Filter By</h3>
-      <Form.Provider onFormChange={(name, info) => console.log(info)}>
-        <Form>
-          <FilterField data={ROOM_TYPES} />
-          <FilterField data={PRICES} slider />
-          <FilterField data={RATINGS} />
-          <FilterField data={BED_TYPES} />
-          <FilterField data={FACILITIES} />
-          <FilterField data={ROOM_FACILITIES} />
-        </Form>
-      </Form.Provider>
+      <Form name="filterForm">
+        <FilterField data={ROOM_TYPES} />
+        <FilterField data={PRICES} slider />
+        <FilterField data={RATINGS} />
+        <FilterField data={BED_TYPES} />
+        <FilterField data={FACILITIES} />
+        <FilterField data={ROOM_FACILITIES} />
+      </Form>
     </div>
   );
 }

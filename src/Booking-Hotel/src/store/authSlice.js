@@ -3,10 +3,10 @@ import { auth } from 'services/config';
 
 const { createSlice } = require('@reduxjs/toolkit');
 
-const initialState = {
-  user: null,
-  isLogin: false,
-};
+const data = JSON.parse(localStorage.getItem('auth'));
+const initialState = data.user
+  ? { user: data.user, isLogin: true }
+  : { user: null, isLogin: false };
 
 const authSlice = createSlice({
   name: 'auth',
@@ -15,10 +15,14 @@ const authSlice = createSlice({
     signin: (state, action) => {
       const data = action.payload;
 
+      localStorage.setItem('auth', JSON.stringify({ user: data }));
+
       state.user = data;
       state.isLogin = true;
     },
     signout: (state, action) => {
+      localStorage.setItem('auth', JSON.stringify({ user: null }));
+
       state.user = null;
       state.isLogin = false;
       signOut(auth);

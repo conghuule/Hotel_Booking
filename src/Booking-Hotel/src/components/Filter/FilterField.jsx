@@ -36,7 +36,7 @@ function FilterField({ data = {}, slider }) {
   }
 
   return (
-    <div className="p-3 mb-2 border-2 border-solid text-mainColor-150 border-mainColor-50 max-w-[240px] rounded-[4px] ">
+    <div className="p-3 mb-2 border-2 border-solid text-mainColor-150 border-mainColor-50 max-w-[300px] rounded-[4px] ">
       <h4 className="font-bold">{data.title}</h4>
       <Form.Item className="m-0" name={data.title}>
         {slider ? (
