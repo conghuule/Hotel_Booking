@@ -4,7 +4,7 @@ import { auth } from 'services/config';
 const { createSlice } = require('@reduxjs/toolkit');
 
 const data = JSON.parse(localStorage.getItem('auth'));
-const initialState = data.user
+const initialState = data?.user
   ? { user: data.user, isLogin: true }
   : { user: null, isLogin: false };
 

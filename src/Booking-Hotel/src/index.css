@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* custom antd */
+.ant-form-item-label>label {
+  font-size: 24px !important;
+  font-weight: 600;
+  color: #000 !important;
+}
+.ant-form-item-control {
+  max-width: 100%;
+}
