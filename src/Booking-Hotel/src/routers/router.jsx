@@ -1,5 +1,6 @@
 import MainLayout from 'layouts/MainLayout';
 import Home from 'pages/Home/Home';
+import Manage from 'pages/Manage/Manage';
 import NotFound from 'pages/NotFound/NotFound';
 import SignIn from 'pages/SignIn/SignIn';
 import SignUp from 'pages/SignUp/SignUp';
@@ -24,8 +25,10 @@ export default function Router() {
     <Routes>
       <Route element={<MainLayout />}>
         <Route element={<PrivateRoute />}>
-          <Route index element={<Home />} />
-          <Route path="home" element={<Home />} />
+          {/* <Route index element={<Home />} />
+          <Route path="home" element={<Home />} /> */}
+          <Route index element={<Manage />} />
+          <Route path="manage" element={<manage />} />
         </Route>
         <Route element={<AuthRoute />}>
           <Route path="signin" element={<SignIn />} />

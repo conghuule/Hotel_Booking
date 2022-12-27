@@ -1,5 +1,5 @@
 import React from 'react';
-import bg_promo from 'assets/images/bg_promo.svg';
+
 export default function PromoCard() {
   return (
     <div>
