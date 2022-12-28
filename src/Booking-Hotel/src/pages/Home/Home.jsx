@@ -8,7 +8,7 @@ import ScrollContainer from 'react-indiana-drag-scroll';
 import Search from 'components/Search/Search';
 
 export default function Home() {
-  return (
+return (
     <div>
       <div className="w-full p-10 bg-mainColor-150 -mt-5 mb-5 relative text-white">
         <h1 className="font-bold m-0">Find a hotel</h1>
@@ -56,3 +56,4 @@ export default function Home() {
     </div>
   );
 }
+
