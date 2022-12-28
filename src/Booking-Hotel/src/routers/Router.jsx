@@ -34,6 +34,7 @@ export default function Router() {
         <Route element={<PrivateRoute />}>
           <Route path="payment" element={<Payment />} />
           <Route path="manage" element={<Manage />} />
+          <Route path="manage/:id" element={<Manage update />} />
         </Route>
         <Route element={<AuthRoute />}>
           <Route path="signin" element={<SignIn />} />

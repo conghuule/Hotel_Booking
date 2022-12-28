@@ -4,7 +4,7 @@ import { AiFillDelete, AiOutlineWifi } from 'react-icons/ai';
 import { CiParking1 } from 'react-icons/ci';
 import { MdSmokeFree } from 'react-icons/md';
 
-export default function Manage() {
+export default function Manage({ update }) {
   const facilities = ['1 bathroom', '1 kitchen', '30m²', '1 queen bed'];
 
   const columns = [
@@ -71,10 +71,10 @@ export default function Manage() {
     <div className="mx-5">
       <div class="flex items-center justify-between mb-[50px]">
         <span class="text-3xl text-mainColor-200 font-bold">
-          Create new Room
+          {update ? 'Change room details' : 'Create new Room'}
         </span>
         <Button type="primary" className="bg-mainColor-200" size="large">
-          Create room
+          {update ? 'Save changes' : 'Create room'}
         </Button>
       </div>
       <div class="flex flex-col mb-10">
