@@ -1,5 +1,3 @@
-import React from 'react';
-import bg_promo from 'assets/images/bg_promo.svg';
 import { Button } from 'antd';
 export default function PromoCard() {
   return (

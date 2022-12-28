@@ -10,7 +10,7 @@ export default function Search({ vertical, ...props }) {
   return (
     <Form
       className={`bg-mainColor-200 ${
-        vertical ? 'flex flex-col p-3 max-w-[300px] gap-2' : 'gap-1 p-1'
+        vertical ? 'flex flex-col p-3 max-w-[300px] gap-5' : 'gap-1 p-1'
       } w-max rounded-md ${props.className}`}
       layout={vertical ? 'vertical' : 'inline'}
       name="searchForm"
