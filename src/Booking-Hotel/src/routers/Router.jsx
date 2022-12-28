@@ -1,6 +1,7 @@
 import MainLayout from 'layouts/MainLayout';
 import Detail from 'pages/Detail/Detail';
 import Home from 'pages/Home/Home';
+import Manage from 'pages/Manage/Manage';
 import NotFound from 'pages/NotFound/NotFound';
 import Payment from 'pages/Payment/Payment';
 import SearchResult from 'pages/SearchResult/SearchResult';
@@ -32,6 +33,7 @@ export default function Router() {
         <Route path="detail/:id" element={<Detail />} />
         <Route element={<PrivateRoute />}>
           <Route path="payment" element={<Payment />} />
+          <Route path="manage" element={<Manage />} />
         </Route>
         <Route element={<AuthRoute />}>
           <Route path="signin" element={<SignIn />} />

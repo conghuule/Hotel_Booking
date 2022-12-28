@@ -1,0 +1,19 @@
+.ant-upload-picture-card-wrapper {
+  display: flex;
+}
+.ant-upload-list {
+  display: flex;
+  gap: 12px;
+}
+
+.upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ant-upload.ant-upload-select,
+.ant-upload-list-item-container {
+  width: 200px !important;
+  height: 200px !important;
+  flex-shrink: 0;
+}
