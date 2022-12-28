@@ -1,12 +1,7 @@
 import { Checkbox, Form, Slider } from 'antd';
 import PropTypes from 'prop-types';
 import { AiFillStar } from 'react-icons/ai';
-
-const formatCurrency = (value) =>
-  new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'VND',
-  }).format(value);
+import { formatCurrency } from 'utils/function';
 
 function FilterField({ data = {}, slider }) {
   function renderItemLabel(item) {
