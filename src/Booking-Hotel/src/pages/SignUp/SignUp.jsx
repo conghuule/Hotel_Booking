@@ -87,6 +87,7 @@ export default function SignUp() {
       );
       const user = userCredential.user;
 
+      // eslint-disable-next-line no-unused-vars
       const res = await addData('users', userData, user.uid);
     } catch (error) {
       switch (error.code) {

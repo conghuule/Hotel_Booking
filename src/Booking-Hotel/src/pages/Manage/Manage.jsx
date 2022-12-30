@@ -16,8 +16,8 @@ export default function Manage({ update }) {
         <div className="flex flex-col gap-2">
           <span className="font-bold">{name}</span>
           <Breadcrumb separator="•">
-            {facilities.map((facility) => (
-              <Breadcrumb.Item>{facility}</Breadcrumb.Item>
+            {facilities.map((facility, index) => (
+              <Breadcrumb.Item key={index}>{facility}</Breadcrumb.Item>
             ))}
           </Breadcrumb>
           <Select
@@ -69,16 +69,16 @@ export default function Manage({ update }) {
 
   return (
     <div className="mx-5">
-      <div class="flex items-center justify-between mb-[50px]">
-        <span class="text-3xl text-mainColor-200 font-bold">
+      <div className="flex items-center justify-between mb-[50px]">
+        <span className="text-3xl font-bold text-mainColor-200">
           {update ? 'Change room details' : 'Create new Room'}
         </span>
         <Button type="primary" className="bg-mainColor-200" size="large">
           {update ? 'Save changes' : 'Create room'}
         </Button>
       </div>
-      <div class="flex flex-col mb-10">
-        <span className="text-2xl text-mainColor-200 font-bold">
+      <div className="flex flex-col mb-10">
+        <span className="text-2xl font-bold text-mainColor-200">
           Lucky Star Hotel De Tham St ⭐⭐⭐⭐
         </span>
 
@@ -87,8 +87,8 @@ export default function Manage({ update }) {
         </span>
       </div>
       <ImageUpload multiple />
-      <div class="flex gap-5 mb-10">
-        <div class="w-3/4 p-5 border-solid border-2 border-mainColor-100 rounded-xl break-words text-lg ">
+      <div className="flex gap-5 mb-10">
+        <div className="w-3/4 p-5 text-lg break-words border-2 border-solid border-mainColor-100 rounded-xl ">
           Featuring a shared lounge, garden and views of river, Luxury An Phú
           Đông Hotel is located in Ho Chi Minh City, 10 km from Vincom Plaza Thu
           Duc. The property is around 10 km from Tan Dinh Market, 10.9 km from
@@ -104,26 +104,26 @@ export default function Manage({ update }) {
           Nhat International Airport, 6.9 km from Luxury An Phú Đông Hotel.
         </div>
         <div className="flex flex-col gap-4">
-          <div class="font-bold p-2 border-solid border-2 border-mainColor-100 rounded-xl text-xl">
+          <div className="p-2 text-xl font-bold border-2 border-solid border-mainColor-100 rounded-xl">
             Studio
           </div>
-          <div class="break-words p-2 border-solid border-2 border-mainColor-100 rounded-xl text-lg">
+          <div className="p-2 text-lg break-words border-2 border-solid border-mainColor-100 rounded-xl">
             Entire studio • 1 bathroom • 1 kitchen • 30m² 1 queen bed
           </div>
         </div>
       </div>
       <div className="flex flex-col gap-2 mb-10">
-        <span class="text-2xl font-bold">Most popular facilities</span>
-        <div class="flex items-center gap-4">
-          <div class="flex gap-1">
+        <span className="text-2xl font-bold">Most popular facilities</span>
+        <div className="flex items-center gap-4">
+          <div className="flex gap-1">
             <MdSmokeFree />
             <span>Non-smoking rooms</span>
           </div>
-          <div class="flex gap-1">
+          <div className="flex gap-1">
             <CiParking1 />
             <span>Free parking</span>
           </div>
-          <div class="flex gap-1">
+          <div className="flex gap-1">
             <AiOutlineWifi />
             <span>Free WiFi</span>
           </div>

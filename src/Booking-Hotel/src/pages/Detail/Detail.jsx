@@ -2,7 +2,6 @@ import {
   Breadcrumb,
   Button,
   Form,
-  Input,
   InputNumber,
   Select,
   Table,
@@ -27,8 +26,8 @@ export default function Detail({ vertical }) {
         <div className="flex flex-col">
           <span className="font-bold">{name}</span>
           <Breadcrumb separator="•">
-            {facilities.map((facility) => (
-              <Breadcrumb.Item>{facility}</Breadcrumb.Item>
+            {facilities.map((facility, index) => (
+              <Breadcrumb.Item key={index}>{facility}</Breadcrumb.Item>
             ))}
           </Breadcrumb>
         </div>
@@ -97,12 +96,12 @@ export default function Detail({ vertical }) {
     <div className="mx-5">
       <div className="flex gap-10">
         <div className="mb-5">
-          <h3 className="font-bold text-mainColor-150 text-2xl">Search</h3>
+          <h3 className="text-2xl font-bold text-mainColor-150">Search</h3>
           <Search vertical className="" />
         </div>
         <div className="flex-1">
           <div className="flex justify-between">
-            <span className="text-2xl text-mainColor-200 font-bold mb-2">
+            <span className="mb-2 text-2xl font-bold text-mainColor-200">
               Lucky Star Hotel 266 De Tham Star
             </span>
             <Button type="primary" htmlType="submit" size="large">
@@ -111,7 +110,7 @@ export default function Detail({ vertical }) {
           </div>
           <span className="">
             District 1, Ho Chi Minh City -{' '}
-            <Link className="text-mainColor-150 no-underline">Show on map</Link>
+            <Link className="no-underline text-mainColor-150">Show on map</Link>
           </span>
           <div className="">
             <img
@@ -123,7 +122,7 @@ export default function Detail({ vertical }) {
         </div>
       </div>
 
-      <div className="py-5 flex">
+      <div className="flex py-5">
         <span className="w-3/4">
           Lorem ipsum dolor sit amet consetetur sadipscing elitr sed diam nonumy
           eirmod tempor invidunt ut labore et dolore magna aliquyam erat sed
@@ -138,37 +137,37 @@ export default function Detail({ vertical }) {
           volutpat id at clita kasd et ut sit te et gubergren sadipscing eos
           takimata sadipscing.
         </span>
-        <div className="w-1/4 flex flex-col gap-3">
+        <div className="flex flex-col w-1/4 gap-3">
           <div className="flex gap-3">
-            <span className="font-bold text-xl">Very Good</span>
-            <span className="text-md text-base">1,195 reviews</span>
-            <div className="p-1 bg-mainColor-150 rounded-r-lg rounded-tl-lg rounded-bl-sm">
+            <span className="text-xl font-bold">Very Good</span>
+            <span className="text-base text-md">1,195 reviews</span>
+            <div className="p-1 rounded-r-lg rounded-tl-lg rounded-bl-sm bg-mainColor-150">
               8.0
             </div>
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-xl">Studio</span>
+            <span className="text-xl font-bold">Studio</span>
             <Breadcrumb separator="•">
-              {facilities.map((facility) => (
-                <Breadcrumb.Item>{facility}</Breadcrumb.Item>
+              {facilities.map((facility, index) => (
+                <Breadcrumb.Item key={index}>{facility}</Breadcrumb.Item>
               ))}
             </Breadcrumb>
           </div>
         </div>
       </div>
 
-      <span className="font-bold text-2xl">Most popular facilities</span>
+      <span className="text-2xl font-bold">Most popular facilities</span>
 
       <div className="flex gap-4 mb-4">
-        <div className="text-sm flex items-center gap-1">
+        <div className="flex items-center gap-1 text-sm">
           <img src={icon1} alt="" className="w-4 h-4" />
           <span>Non-smoking rooms</span>
         </div>
-        <div className="text-sm flex items-center gap-1">
+        <div className="flex items-center gap-1 text-sm">
           <img src={icon2} alt="" className="w-4 h-4" />
           <span>Free parking</span>
         </div>
-        <div className="text-sm flex items-center gap-1">
+        <div className="flex items-center gap-1 text-sm">
           <img src={icon3} alt="" className="w-4 h-4" />
           <span>Free Wifi</span>
         </div>

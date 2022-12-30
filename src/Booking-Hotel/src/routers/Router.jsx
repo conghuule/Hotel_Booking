@@ -1,4 +1,6 @@
 import MainLayout from 'layouts/MainLayout';
+import AddReview from 'pages/AddReview/AddReview';
+import BookingHistory from 'pages/BookingHistory/BookingHistory';
 import Detail from 'pages/Detail/Detail';
 import Home from 'pages/Home/Home';
 import Manage from 'pages/Manage/Manage';
@@ -29,6 +31,8 @@ export default function Router() {
       <Route element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="home" element={<Home />} />
+        <Route path="bookinghistory" element={<BookingHistory />} />
+        <Route path="addreview" element={<AddReview />} />
         <Route path="search/:searchKey" element={<SearchResult />} />
         <Route path="detail/:id" element={<Detail />} />
         <Route element={<PrivateRoute />}>
