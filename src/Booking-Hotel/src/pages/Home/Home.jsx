@@ -6,9 +6,9 @@ import Title from 'components/Card/Title';
 import { Carousel } from 'antd';
 import ScrollContainer from 'react-indiana-drag-scroll';
 import Search from 'components/Search/Search';
-
+import ChatBox from 'components/Chat/ChatBox';
 export default function Home() {
-return (
+  return (
     <div>
       <div className="w-full p-10 bg-mainColor-150 -mt-5 mb-5 relative text-white">
         <h1 className="font-bold m-0">Find a hotel</h1>
@@ -53,7 +53,7 @@ return (
           <DestinationCard destination={'Phu Quoc'} amountHotel={1123} />
         </ScrollContainer>
       </div>
+      <ChatBox />
     </div>
   );
 }
-
