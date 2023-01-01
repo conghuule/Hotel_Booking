@@ -175,6 +175,41 @@ export default function Detail({ vertical }) {
       </div>
 
       <Table columns={columns} dataSource={data} bordered />
+
+      <div class="review">
+        <div class="font-bold text-[32px] mb-[20px]">Guest review</div>
+        <div>
+          <div class="flex items-center mb-[15px]">
+            <div class="overflow-hidden mr-[18px]">
+              <img
+                src={hotelBg}
+                class="object-cover w-[59px] h-[59px] rounded-[50%]"
+              />
+            </div>
+            <div class="font-bold mr-[40px]">Danny</div>
+            <div>⭐⭐</div>
+          </div>
+          <div class="flex mb-[15px]">
+            <div class="overflow-hidden rounded-[12px] mr-[15px]">
+              <img src={hotelBg} class="object-cover w-[157px] h-[157px]" />
+            </div>
+            <div class="overflow-hidden rounded-[12px] mr-[15px]">
+              <img src={hotelBg} class="object-cover w-[157px] h-[157px]" />
+            </div>
+            <div class="overflow-hidden rounded-[12px] mr-[15px]">
+              <img src={hotelBg} class="object-cover w-[157px] h-[157px]" />
+            </div>
+            <div class="overflow-hidden rounded-[12px] mr-[15px]">
+              <img src={hotelBg} class="object-cover w-[157px] h-[157px]" />
+            </div>
+          </div>
+          <div class="text-[20px]">
+            The property isn’t as the photographs. The photos show a covered
+            outside space but this isn’t the case. This area has been changed
+            into a conservatory lean-to.
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
