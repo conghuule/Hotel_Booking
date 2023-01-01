@@ -1,4 +1,7 @@
 import MainLayout from 'layouts/MainLayout';
+import AddReview from 'pages/AddReview/AddReview';
+import BookingHistory from 'pages/BookingHistory/BookingHistory';
+import Dashboard from 'pages/Dashboard/Dashboard';
 import Detail from 'pages/Detail/Detail';
 import Home from 'pages/Home/Home';
 import Manage from 'pages/Manage/Manage';
@@ -7,6 +10,7 @@ import Payment from 'pages/Payment/Payment';
 import SearchResult from 'pages/SearchResult/SearchResult';
 import SignIn from 'pages/SignIn/SignIn';
 import SignUp from 'pages/SignUp/SignUp';
+import UserProfile from 'pages/UserProfile/UserProfile';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
@@ -29,12 +33,16 @@ export default function Router() {
       <Route element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="home" element={<Home />} />
-        <Route path="search/:searchKey" element={<SearchResult />} />
+        <Route path="search" element={<SearchResult />} />
         <Route path="detail/:id" element={<Detail />} />
         <Route element={<PrivateRoute />}>
+          <Route path="profile" element={<UserProfile />} />
           <Route path="payment" element={<Payment />} />
           <Route path="manage" element={<Manage />} />
-          <Route path="manage/:id" element={<Manage update />} />
+          <Route path="manage/:id" element={<Manage isUpdate />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="history" element={<BookingHistory />} />
+          <Route path="add-review" element={<AddReview />} />
         </Route>
         <Route element={<AuthRoute />}>
           <Route path="signin" element={<SignIn />} />

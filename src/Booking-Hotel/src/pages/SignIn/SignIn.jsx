@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { auth } from 'services/config';
+import { getData } from 'services/services';
 import { signin } from 'store/authSlice';
 
 export default function SignIn() {
@@ -34,6 +35,8 @@ export default function SignIn() {
         data.email,
         data.password
       );
+      const userData = userCredential.user;
+      userData.data = await getData({ docName: 'users', id: userData?.uid });
 
       dispatch(signin(userCredential.user));
     } catch (error) {

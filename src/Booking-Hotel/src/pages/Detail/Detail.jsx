@@ -1,22 +1,65 @@
 import {
   Breadcrumb,
   Button,
+  Carousel,
   Form,
-  Input,
   InputNumber,
   Select,
+  Skeleton,
   Table,
 } from 'antd';
+import Review from 'components/Review';
 import Search from 'components/Search/Search';
-import { Link } from 'react-router-dom';
-import hotelBg from 'assets/images/Hotel2.png';
-import icon1 from 'assets/images/icon-no-smoking.png';
-import icon2 from 'assets/images/icon-free-parking.png';
-import icon3 from 'assets/images/icon-free-wifi.png';
+import { useEffect, useMemo, useState } from 'react';
+import { AiFillStar } from 'react-icons/ai';
+import { Link, useParams } from 'react-router-dom';
+import { getData } from 'services/services';
 import { formatCurrency } from 'utils/function';
 
-export default function Detail({ vertical }) {
-  const facilities = ['1 bathroom', '1 kitchen', '30m²', '1 queen bed'];
+export default function Detail() {
+  const { id } = useParams();
+  const [hotelData, setHotelData] = useState({ data: {}, isLoading: true });
+  const [promotionList, setPromotionList] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [discountAmount, setDiscountAmount] = useState(0);
+
+  useEffect(() => {
+    getData({
+      docName: 'hotels',
+      id,
+    }).then((res) => {
+      setHotelData({ data: res, isLoading: false });
+    });
+
+    getData({
+      docName: 'promotions',
+    }).then((res) => {
+      setPromotionList(res);
+    });
+  }, [id]);
+
+  const onChangeQuantity = (forms) => {
+    const data = forms.getFieldsValue();
+    const promotionCode = forms.getFieldValue('promotion');
+    const promotion = promotionList.find((v) => v.code === promotionCode);
+
+    const price = Object.values(data)
+      .filter((v) => Number.isInteger(v))
+      ?.reduce(
+        (total, quantity, index) =>
+          total + quantity * hotelData.data.rooms?.[index]?.price,
+        0
+      );
+
+    const amount = !promotion
+      ? 0
+      : promotion.discount_percent * price > promotion.max_discount_amount
+      ? promotion.max_discount_amount
+      : promotion.discount_percent;
+
+    setTotalPrice(price);
+    setDiscountAmount(amount);
+  };
 
   const columns = [
     {
@@ -27,8 +70,8 @@ export default function Detail({ vertical }) {
         <div className="flex flex-col">
           <span className="font-bold">{name}</span>
           <Breadcrumb separator="•">
-            {facilities.map((facility) => (
-              <Breadcrumb.Item>{facility}</Breadcrumb.Item>
+            {facilities?.map((facility, index) => (
+              <Breadcrumb.Item key={index}>{facility}</Breadcrumb.Item>
             ))}
           </Breadcrumb>
         </div>
@@ -53,15 +96,27 @@ export default function Detail({ vertical }) {
     {
       title: 'Total',
       dataIndex: 'total',
-      render: (_, { totalPrice }) => (
+      render: () => (
         <div className="flex flex-col gap-10">
           <div className="flex flex-col">
             <span className="font-bold">{formatCurrency(totalPrice)}</span>
+            <span className="text-red-400">
+              -{formatCurrency(discountAmount)}
+            </span>
             <span className="opacity-50">Includes taxes and fees</span>
           </div>
           <div className="flex flex-col gap-3">
-            <Select placeholder="Coupon code" className="w-full" />
-            <Button type="primary" block>
+            <Form.Item name="promotion">
+              <Select
+                placeholder="Coupon code"
+                className="w-full"
+                options={promotionList.map((promotion) => ({
+                  label: promotion.code,
+                  value: promotion.code,
+                }))}
+              />
+            </Form.Item>
+            <Button type="primary" htmlType="submit" block>
               Book now
             </Button>
           </div>
@@ -82,99 +137,115 @@ export default function Detail({ vertical }) {
     },
   ];
 
-  const data = [
-    {
-      name: 'Standard Double Room',
-      facilities,
-      price: 2380000,
-      quantity: 1,
-      totalPrice: 2380000 + 3330000 * 2,
-    },
-    { name: 'Superior Double Room', facilities, price: 3330000, quantity: 2 },
-  ];
+  const data = useMemo(
+    () => hotelData.data?.rooms?.map((room) => ({ ...room, quantity: 0 })),
+    [hotelData]
+  );
 
   return (
-    <div className="mx-5">
-      <div className="flex gap-10">
-        <div className="mb-5">
-          <h3 className="font-bold text-mainColor-150 text-2xl">Search</h3>
-          <Search vertical className="" />
-        </div>
-        <div className="flex-1">
-          <div className="flex justify-between">
-            <span className="text-2xl text-mainColor-200 font-bold mb-2">
-              Lucky Star Hotel 266 De Tham Star
-            </span>
-            <Button type="primary" htmlType="submit" size="large">
-              Chat to Hotel ower
-            </Button>
-          </div>
-          <span className="">
-            District 1, Ho Chi Minh City -{' '}
-            <Link className="text-mainColor-150 no-underline">Show on map</Link>
-          </span>
-          <div className="">
-            <img
-              className="p-1 bg-white border rounded w-full h-[273px] mt-1 object-cover"
-              src={hotelBg}
-              alt=""
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="py-5 flex">
-        <span className="w-3/4">
-          Lorem ipsum dolor sit amet consetetur sadipscing elitr sed diam nonumy
-          eirmod tempor invidunt ut labore et dolore magna aliquyam erat sed
-          diam voluptua at vero eos et accusam et justo duo dolores et ea rebum
-          stet clita kasd gubergren no sea takimata sanctus est lorem ipsum
-          dolor sit amet. Minim diam at ipsum tempor. Augue feugait luptatum in
-          lorem tincidunt sed eros elitr aliquip suscipit. Diam molestie sanctus
-          ut. Sadipscing iriure dolor rebum et justo diam nonumy dolore ut sit
-          ipsum ut lorem. No nihil eu lorem sea. Erat no euismod diam elitr diam
-          erat velit. Diam kasd ipsum sit est laoreet diam commodo laoreet
-          exerci congue hendrerit in vel et takimata accusam est. Elitr sanctus
-          volutpat id at clita kasd et ut sit te et gubergren sadipscing eos
-          takimata sadipscing.
-        </span>
-        <div className="w-1/4 flex flex-col gap-3">
-          <div className="flex gap-3">
-            <span className="font-bold text-xl">Very Good</span>
-            <span className="text-md text-base">1,195 reviews</span>
-            <div className="p-1 bg-mainColor-150 rounded-r-lg rounded-tl-lg rounded-bl-sm">
-              8.0
+    <Skeleton loading={hotelData.isLoading} active>
+      <Form.Provider
+        onFormChange={(name, info) => onChangeQuantity(info.forms.bookingForm)}
+      >
+        <div className="mx-5">
+          <div className="flex gap-10">
+            <div className="mb-5">
+              <h3 className="text-2xl font-bold text-mainColor-150">Search</h3>
+              <Search vertical className="" />
+            </div>
+            <div className="flex flex-col w-3/4">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-2xl font-bold text-mainColor-200">
+                  {hotelData.data?.name}
+                </span>
+                <Button type="primary" htmlType="submit" size="large">
+                  Chat to Hotel ower
+                </Button>
+              </div>
+              <span className="">
+                {hotelData.data?.address} -{' '}
+                <Link className="no-underline text-mainColor-150">
+                  Show on map
+                </Link>
+              </span>
+              <Carousel autoplay>
+                {hotelData.data?.images?.map((image) => (
+                  <img
+                    className="p-1 bg-white border rounded w-full h-[273px] mt-1 object-contain"
+                    src={image}
+                    alt=""
+                  />
+                ))}
+              </Carousel>
             </div>
           </div>
-          <div className="flex flex-col">
-            <span className="font-bold text-xl">Studio</span>
+          <div className="flex flex-col gap-5 py-5">
+            <div className="flex flex-col w-1/4 gap-1">
+              <div className="flex items-center gap-3">
+                <div className="">
+                  {hotelData.data?.reviews?.length
+                    ? Array(
+                        Number.parseInt(
+                          hotelData.data?.reviews?.reduce(
+                            (total, review) => total + review.rating,
+                            0
+                          ) / hotelData.data?.reviews?.length
+                        )
+                      )
+                        .fill()
+                        .map(() => (
+                          <AiFillStar className="text-yellow-300" size={20} />
+                        ))
+                    : ''}
+                </div>
+                <span className="text-base text-md">
+                  {hotelData.data?.reviews?.length} reviews
+                </span>
+                <div className="p-2 rounded-r-lg rounded-tl-lg rounded-bl-sm bg-mainColor-150 text-white">
+                  {hotelData.data?.reviews?.length
+                    ? hotelData.data?.reviews?.reduce(
+                        (total, review) => total + review.rating,
+                        0
+                      ) / hotelData.data?.reviews?.length
+                    : 0}
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <Breadcrumb separator="•">
+                  {hotelData.data?.specs?.map((spec, index) => (
+                    <Breadcrumb.Item key={index}>{spec}</Breadcrumb.Item>
+                  ))}
+                </Breadcrumb>
+              </div>
+            </div>
+            <span>{hotelData.data?.desc}</span>
+          </div>
+          <div className="mb-5">
+            <span className="text-2xl font-bold">Most popular facilities</span>
             <Breadcrumb separator="•">
-              {facilities.map((facility) => (
-                <Breadcrumb.Item>{facility}</Breadcrumb.Item>
+              {hotelData.data?.facilities?.map((facility, index) => (
+                <Breadcrumb.Item key={index}>{facility}</Breadcrumb.Item>
               ))}
             </Breadcrumb>
           </div>
+          <Form name="bookingForm">
+            <Table
+              columns={columns}
+              dataSource={data}
+              bordered
+              pagination={false}
+            />
+          </Form>
+          <div className="mt-5">
+            <span className="text-2xl font-bold">Reviews</span>
+            <div className="flex flex-col gap-2">
+              {hotelData.data?.reviews?.map((review) => (
+                <Review {...review} />
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-
-      <span className="font-bold text-2xl">Most popular facilities</span>
-
-      <div className="flex gap-4 mb-4">
-        <div className="text-sm flex items-center gap-1">
-          <img src={icon1} alt="" className="w-4 h-4" />
-          <span>Non-smoking rooms</span>
-        </div>
-        <div className="text-sm flex items-center gap-1">
-          <img src={icon2} alt="" className="w-4 h-4" />
-          <span>Free parking</span>
-        </div>
-        <div className="text-sm flex items-center gap-1">
-          <img src={icon3} alt="" className="w-4 h-4" />
-          <span>Free Wifi</span>
-        </div>
-      </div>
-
-      <Table columns={columns} dataSource={data} bordered />
-    </div>
+      </Form.Provider>
+    </Skeleton>
   );
 }

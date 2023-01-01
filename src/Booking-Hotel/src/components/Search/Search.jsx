@@ -1,11 +1,17 @@
 import { Button, DatePicker, Form, InputNumber, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { getData } from 'services/services';
 export default function Search({ vertical, ...props }) {
   const [form] = useForm();
   const navigate = useNavigate();
+  const [locationList, setLocationList] = useState([]);
+
+  useEffect(() => {
+    getData({ docName: 'locations' }).then((res) => setLocationList(res));
+  }, []);
 
   return (
     <Form
@@ -22,12 +28,10 @@ export default function Search({ vertical, ...props }) {
           showSearch
           placeholder="Where are you going?"
           dropdownMatchSelectWidth={false}
-          options={[
-            { label: 'Ho Chi Minh', value: 'Ho Chi Minh' },
-            { label: 'Ha Noi', value: 'Ha Noi' },
-            { label: 'Phu Quoc', value: 'Phu Quoc' },
-            { label: 'Hoi An', value: 'Hoi An' },
-          ]}
+          options={locationList?.map((location) => ({
+            label: location.name,
+            value: location.name,
+          }))}
         />
       </Form.Item>
       <Form.Item className={'m-0'} name="time">
@@ -57,7 +61,9 @@ export default function Search({ vertical, ...props }) {
       <Button
         type="primary"
         htmlType="submit"
-        onClick={() => navigate(`/search/${form.getFieldValue('dest')}`)}
+        onClick={() =>
+          navigate(`/search?location=${form.getFieldValue('dest')}`)
+        }
       >
         Search
       </Button>

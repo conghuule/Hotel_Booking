@@ -87,7 +87,7 @@ export default function SignUp() {
       );
       const user = userCredential.user;
 
-      const res = await addData('users', userData, user.uid);
+      await addData({ docName: 'users', data: userData, id: user.uid });
     } catch (error) {
       switch (error.code) {
         case 'auth/weak-password':

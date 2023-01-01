@@ -10,6 +10,7 @@ const ImageUpload = ({
   initialValue,
   required,
   onRemove,
+  size,
   ...props
 }) => {
   const [fileList, setFileList] = useState([]);
@@ -42,7 +43,7 @@ const ImageUpload = ({
         }
       >
         <Upload
-          className="w-40 h-40"
+          className={size}
           multiple={multiple}
           beforeUpload={() => false}
           showUploadList={{ showPreviewIcon: false }}
