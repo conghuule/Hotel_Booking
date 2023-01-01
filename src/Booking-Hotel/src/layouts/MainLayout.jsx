@@ -8,7 +8,9 @@ export default function MainLayout() {
       <Header />
       <div className="flex justify-center flex-1">
         <div className="container p-5">
-          <Outlet />
+          <div className="mx-5">
+            <Outlet />
+          </div>
         </div>
       </div>
       <Footer />

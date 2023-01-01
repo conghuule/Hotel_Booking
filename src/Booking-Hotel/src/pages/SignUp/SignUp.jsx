@@ -87,8 +87,7 @@ export default function SignUp() {
       );
       const user = userCredential.user;
 
-      // eslint-disable-next-line no-unused-vars
-      const res = await addData('users', userData, user.uid);
+      await addData({ docName: 'users', data: userData, id: user.uid });
     } catch (error) {
       switch (error.code) {
         case 'auth/weak-password':

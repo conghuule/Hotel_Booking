@@ -1,14 +1,44 @@
-import React from 'react';
+import { Carousel, Skeleton } from 'antd';
+import DestinationCard from 'components/Card/DestinationCard';
 import PromoCard from 'components/Card/PromoCard';
 import RecommendedCard from 'components/Card/RecommendedCard';
-import DestinationCard from 'components/Card/DestinationCard';
 import Title from 'components/Card/Title';
-import { Carousel } from 'antd';
-import ScrollContainer from 'react-indiana-drag-scroll';
 import Search from 'components/Search/Search';
+import { useEffect, useState } from 'react';
+import ScrollContainer from 'react-indiana-drag-scroll';
+import { getData } from 'services/services';
 
 export default function Home() {
-return (
+  const [promotionList, setPromotionList] = useState({
+    data: [],
+    isLoading: true,
+  });
+  const [hotelList, setHotelList] = useState({ data: [], isLoading: true });
+  const [locationList, setLocationList] = useState({
+    data: [],
+    isLoading: true,
+  });
+
+  useEffect(() => {
+    //get promotion list
+    getData({
+      docName: 'promotions',
+      limitNumber: 5,
+    }).then((res) => setPromotionList({ data: res, isLoading: false }));
+
+    //get hotel list
+    getData({
+      docName: 'hotels',
+      limitNumber: 5,
+    }).then((res) => setHotelList({ data: res, isLoading: false }));
+
+    //get hotel list
+    getData({
+      docName: 'locations',
+    }).then((res) => setLocationList({ data: res, isLoading: false }));
+  }, []);
+
+  return (
     <div>
       <div className="w-full p-10 bg-mainColor-150 -mt-5 mb-5 relative text-white">
         <h1 className="font-bold m-0">Find a hotel</h1>
@@ -20,40 +50,40 @@ return (
           primaryTitle={'Promotion'}
           secondTitle={'Promotions just for you'}
         />
-        <Carousel autoplay>
-          <PromoCard />
-          <PromoCard />
-        </Carousel>
+        <Skeleton loading={promotionList.isLoading} active>
+          <Carousel autoplay>
+            {promotionList.data?.map((promotion) => (
+              <PromoCard key={promotion.id} data={promotion} />
+            ))}
+          </Carousel>
+        </Skeleton>
       </div>
       <div className="mb-10">
         <Title
           primaryTitle={'Recommendations'}
           secondTitle={'Recommendations just for you'}
         />
-        <ScrollContainer horizontal className="flex gap-5">
-          <RecommendedCard hotelName={'Hotel #1'} />
-          <RecommendedCard hotelName={'Hotel #2'} />
-          <RecommendedCard hotelName={'Hotel #3'} />
-          <RecommendedCard hotelName={'Hotel #4'} />
-          <RecommendedCard hotelName={'Hotel #5'} />
-          <RecommendedCard hotelName={'Hotel #6'} />
-          <RecommendedCard hotelName={'Hotel #7'} />
-          <RecommendedCard hotelName={'Hotel #8'} />
-        </ScrollContainer>
+        <Skeleton loading={hotelList.isLoading} active>
+          <ScrollContainer horizontal className="flex gap-5">
+            {hotelList.data.map((hotel) => (
+              <RecommendedCard {...hotel} key={hotel.id} />
+            ))}
+          </ScrollContainer>
+        </Skeleton>
       </div>
       <div className="mb-10">
         <Title
           primaryTitle={'Discover'}
           secondTitle={'Discover famous destination'}
         />
-        <ScrollContainer horizontal className="flex gap-5">
-          <DestinationCard destination={'Vung Tau'} amountHotel={1123} />
-          <DestinationCard destination={'Da Lat'} amountHotel={1123} />
-          <DestinationCard destination={'Sa pa'} amountHotel={1123} />
-          <DestinationCard destination={'Phu Quoc'} amountHotel={1123} />
-        </ScrollContainer>
+        <Skeleton loading={locationList.isLoading} active>
+          <ScrollContainer horizontal className="flex gap-5">
+            {locationList.data.map((location) => (
+              <DestinationCard {...location} key={location.id} />
+            ))}
+          </ScrollContainer>
+        </Skeleton>
       </div>
     </div>
   );
 }
-

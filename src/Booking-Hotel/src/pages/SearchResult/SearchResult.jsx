@@ -2,10 +2,12 @@ import { Form, Select } from 'antd';
 import HotelCard from 'components/Card/HotelCard';
 import Filter from 'components/Filter';
 import Search from 'components/Search/Search';
-import { useParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 export default function SearchResult() {
-  const { searchKey } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const location = searchParams.get('location');
 
   return (
     <div className="flex">
@@ -24,7 +26,7 @@ export default function SearchResult() {
         </div>
         <div className="flex-1 flex flex-col gap-5">
           <div className="">
-            <h1 className="mb-1">{searchKey}: 1,287 properties found</h1>
+            <h1 className="mb-1">{location}: 1,287 properties found</h1>
             <Form className="w-fit" name="sortForm">
               <Form.Item name="sort">
                 <Select

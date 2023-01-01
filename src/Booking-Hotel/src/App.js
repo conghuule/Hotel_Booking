@@ -4,14 +4,16 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Router from 'routers/Router';
 import { auth } from 'services/config';
+import { getData } from 'services/services';
 import { signin, signout } from 'store/authSlice';
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubcribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        user.data = await getData({ docName: 'users', id: user?.uid });
         dispatch(signin(user));
       } else {
         dispatch(signout());
@@ -19,7 +21,7 @@ function App() {
     });
 
     return () => {
-      unsubcribe();
+      unsubscribe();
     };
   }, [dispatch]);
 

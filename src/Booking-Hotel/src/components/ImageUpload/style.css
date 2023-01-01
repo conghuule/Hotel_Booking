@@ -11,9 +11,15 @@
   align-items: center;
   justify-content: center;
 }
-.ant-upload.ant-upload-select,
-.ant-upload-list-item-container {
+.lg .ant-upload.ant-upload-select,
+.lg .ant-upload-list-item-container {
   width: 200px !important;
   height: 200px !important;
+  flex-shrink: 0;
+}
+.md .ant-upload.ant-upload-select,
+.md .ant-upload-list-item-container {
+  width: 150px !important;
+  height: 150px !important;
   flex-shrink: 0;
 }

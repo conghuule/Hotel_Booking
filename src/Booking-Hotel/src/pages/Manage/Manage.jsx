@@ -1,10 +1,10 @@
 import { Breadcrumb, Button, InputNumber, Select, Table } from 'antd';
-import ImageUpload from 'components/ImagUpload/ImageUpload';
+import ImageUpload from 'components/ImageUpload/ImageUpload';
 import { AiFillDelete, AiOutlineWifi } from 'react-icons/ai';
 import { CiParking1 } from 'react-icons/ci';
 import { MdSmokeFree } from 'react-icons/md';
 
-export default function Manage({ update }) {
+export default function Manage({ isUpdate }) {
   const facilities = ['1 bathroom', '1 kitchen', '30m²', '1 queen bed'];
 
   const columns = [
@@ -71,10 +71,10 @@ export default function Manage({ update }) {
     <div className="mx-5">
       <div className="flex items-center justify-between mb-[50px]">
         <span className="text-3xl font-bold text-mainColor-200">
-          {update ? 'Change room details' : 'Create new Room'}
+          {isUpdate ? 'Change room details' : 'Create new Room'}
         </span>
         <Button type="primary" className="bg-mainColor-200" size="large">
-          {update ? 'Save changes' : 'Create room'}
+          {isUpdate ? 'Save changes' : 'Create room'}
         </Button>
       </div>
       <div className="flex flex-col mb-10">
@@ -86,7 +86,7 @@ export default function Manage({ update }) {
           Lucky Star Hotel De Tham St, District 1, Ho Chi Minh City
         </span>
       </div>
-      <ImageUpload multiple />
+      <ImageUpload multiple size="lg" />
       <div className="flex gap-5 mb-10">
         <div className="w-3/4 p-5 text-lg break-words border-2 border-solid border-mainColor-100 rounded-xl ">
           Featuring a shared lounge, garden and views of river, Luxury An Phú

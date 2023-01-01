@@ -31,14 +31,14 @@ export default function Router() {
       <Route element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="home" element={<Home />} />
-        <Route path="bookinghistory" element={<BookingHistory />} />
-        <Route path="addreview" element={<AddReview />} />
-        <Route path="search/:searchKey" element={<SearchResult />} />
+        <Route path="search" element={<SearchResult />} />
         <Route path="detail/:id" element={<Detail />} />
         <Route element={<PrivateRoute />}>
           <Route path="payment" element={<Payment />} />
           <Route path="manage" element={<Manage />} />
           <Route path="manage/:id" element={<Manage update />} />
+          <Route path="history" element={<BookingHistory />} />
+          <Route path="add-review" element={<AddReview />} />
         </Route>
         <Route element={<AuthRoute />}>
           <Route path="signin" element={<SignIn />} />

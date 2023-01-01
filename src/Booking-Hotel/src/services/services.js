@@ -4,13 +4,22 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
+  orderBy,
   query,
   setDoc,
   where,
 } from 'firebase/firestore';
-import { db } from './config';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { db, storage } from './config';
 
-export const getData = async (docName, conditionList = [], id) => {
+export const getData = async ({
+  docName,
+  id,
+  conditionList = [],
+  limitNumber = 100,
+  orderByField,
+}) => {
   if (id) {
     const docRef = doc(db, docName, id);
     const docSnap = await getDoc(docRef);
@@ -23,7 +32,11 @@ export const getData = async (docName, conditionList = [], id) => {
   const conditions = conditionList.map((condition) =>
     where(condition.field, condition.operator, condition.value)
   );
-  const q = query(docRef, ...conditions);
+
+  const q = orderByField
+    ? query(docRef, ...conditions, limit(limitNumber), orderBy(orderByField))
+    : query(docRef, ...conditions, limit(limitNumber));
+
   const querySnapshot = await getDocs(q);
 
   querySnapshot.forEach((doc) => {
@@ -33,7 +46,7 @@ export const getData = async (docName, conditionList = [], id) => {
   return result;
 };
 
-export const addData = async (docName, data, id) => {
+export const addData = async ({ docName, data, id }) => {
   if (id) {
     try {
       await setDoc(doc(db, docName, id), data);
@@ -46,4 +59,18 @@ export const addData = async (docName, data, id) => {
   const docRef = await addDoc(collection(db, docName), data);
 
   return { id: docRef.id, ...data };
+};
+
+export const addFile = async ({ file, folder = '' }) => {
+  const storageRef = ref(storage, `${folder}/${file.name}`);
+
+  try {
+    console.log(file);
+    const res = await uploadBytes(storageRef, file);
+
+    return getDownloadURL(res.ref);
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };
