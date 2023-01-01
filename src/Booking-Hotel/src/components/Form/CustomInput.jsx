@@ -20,6 +20,7 @@ export default function CustomInput({
   suffix,
   mode,
   options,
+  disabled,
 }) {
   return (
     <>
@@ -64,6 +65,7 @@ export default function CustomInput({
           suffix={suffix}
           value={value}
           onChange={onChange}
+          disabled={disabled}
         />
       ) : type === 'number' ? (
         <InputNumber

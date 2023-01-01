@@ -40,7 +40,7 @@ export default function Header() {
 
   const handleButtonClick = (e) => {
     if (e.key === 'profile') {
-      dispatch(signout());
+      navigate('profile');
     }
     if (e.key === 'dashboard') {
       navigate('dashboard');
@@ -71,7 +71,15 @@ export default function Header() {
               trigger={['click']}
             >
               <div className="flex items-center gap-2 cursor-pointer">
-                <FaUserCircle fontSize={32} />
+                {user.data?.avatar ? (
+                  <img
+                    src={user.data?.avatar}
+                    alt=""
+                    className="w-10 h-10 rounded-full"
+                  />
+                ) : (
+                  <FaUserCircle fontSize={32} />
+                )}
                 <RiArrowDownSFill fontSize={20} />
               </div>
             </Dropdown>

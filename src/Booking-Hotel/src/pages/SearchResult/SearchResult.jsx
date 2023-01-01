@@ -41,6 +41,7 @@ export default function SearchResult() {
             </Form>
           </div>
 
+          {/* <HotelCard />
           <HotelCard />
           <HotelCard />
           <HotelCard />
@@ -48,8 +49,7 @@ export default function SearchResult() {
           <HotelCard />
           <HotelCard />
           <HotelCard />
-          <HotelCard />
-          <HotelCard />
+          <HotelCard /> */}
         </div>
       </Form.Provider>
     </div>

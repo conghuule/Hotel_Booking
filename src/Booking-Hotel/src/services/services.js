@@ -8,6 +8,7 @@ import {
   orderBy,
   query,
   setDoc,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -61,11 +62,22 @@ export const addData = async ({ docName, data, id }) => {
   return { id: docRef.id, ...data };
 };
 
+export const updateData = async ({ docName, data, id }) => {
+  const ref = doc(db, docName, id);
+
+  try {
+    await updateDoc(ref, data);
+    return { ...data };
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
 export const addFile = async ({ file, folder = '' }) => {
   const storageRef = ref(storage, `${folder}/${file.name}`);
 
   try {
-    console.log(file);
     const res = await uploadBytes(storageRef, file);
 
     return getDownloadURL(res.ref);

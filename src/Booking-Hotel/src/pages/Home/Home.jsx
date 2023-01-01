@@ -7,7 +7,6 @@ import Search from 'components/Search/Search';
 import { useEffect, useState } from 'react';
 import ScrollContainer from 'react-indiana-drag-scroll';
 import { getData } from 'services/services';
-
 export default function Home() {
   const [promotionList, setPromotionList] = useState({
     data: [],
