@@ -44,8 +44,10 @@ export default function HotelCard({
         <div className="flex items-center justify-between gap-1">
           <span className="text-md">{reviews?.length} reviews</span>
           <div className="p-2 rounded-r-lg rounded-tl-lg rounded-bl-sm bg-mainColor-200 text-white">
-            {reviews?.reduce((total, review) => total + review.rating, 0) /
-              reviews?.length}
+            {reviews?.length
+              ? reviews?.reduce((total, review) => total + review.rating, 0) /
+                reviews?.length
+              : 0}
           </div>
         </div>
         <div className="flex flex-col items-end">

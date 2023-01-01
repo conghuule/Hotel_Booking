@@ -1,4 +1,5 @@
 import { ConfigProvider } from 'antd';
+import ChatBox from 'components/Chat/ChatBox';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -34,6 +35,7 @@ function App() {
       }}
     >
       <Router />
+      <ChatBox />
     </ConfigProvider>
   );
 }

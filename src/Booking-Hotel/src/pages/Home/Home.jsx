@@ -3,6 +3,7 @@ import DestinationCard from 'components/Card/DestinationCard';
 import PromoCard from 'components/Card/PromoCard';
 import RecommendedCard from 'components/Card/RecommendedCard';
 import Title from 'components/Card/Title';
+import ChatBox from 'components/Chat/ChatBox';
 import Search from 'components/Search/Search';
 import { useEffect, useState } from 'react';
 import ScrollContainer from 'react-indiana-drag-scroll';

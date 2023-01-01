@@ -152,7 +152,7 @@ export default function Detail() {
               <h3 className="text-2xl font-bold text-mainColor-150">Search</h3>
               <Search vertical className="" />
             </div>
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col w-3/4">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-2xl font-bold text-mainColor-200">
                   {hotelData.data?.name}
@@ -182,26 +182,31 @@ export default function Detail() {
             <div className="flex flex-col w-1/4 gap-1">
               <div className="flex items-center gap-3">
                 <div className="">
-                  {hotelData.data?.reviews &&
-                    Array(
-                      hotelData.data?.reviews?.reduce(
-                        (total, review) => total + review.rating,
-                        0
-                      ) / hotelData.data?.reviews?.length
-                    )
-                      .fill()
-                      .map(() => (
-                        <AiFillStar className="text-yellow-300" size={20} />
-                      ))}
+                  {hotelData.data?.reviews?.length
+                    ? Array(
+                        Number.parseInt(
+                          hotelData.data?.reviews?.reduce(
+                            (total, review) => total + review.rating,
+                            0
+                          ) / hotelData.data?.reviews?.length
+                        )
+                      )
+                        .fill()
+                        .map(() => (
+                          <AiFillStar className="text-yellow-300" size={20} />
+                        ))
+                    : ''}
                 </div>
                 <span className="text-base text-md">
                   {hotelData.data?.reviews?.length} reviews
                 </span>
                 <div className="p-2 rounded-r-lg rounded-tl-lg rounded-bl-sm bg-mainColor-150 text-white">
-                  {hotelData.data?.reviews?.reduce(
-                    (total, review) => total + review.rating,
-                    0
-                  ) / hotelData.data?.reviews?.length}
+                  {hotelData.data?.reviews?.length
+                    ? hotelData.data?.reviews?.reduce(
+                        (total, review) => total + review.rating,
+                        0
+                      ) / hotelData.data?.reviews?.length
+                    : 0}
                 </div>
               </div>
               <div className="flex flex-col">
