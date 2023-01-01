@@ -8,6 +8,7 @@ import {
   Skeleton,
   Table,
 } from 'antd';
+import Review from 'components/Review';
 import Search from 'components/Search/Search';
 import { useEffect, useMemo, useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
@@ -228,8 +229,21 @@ export default function Detail() {
             </Breadcrumb>
           </div>
           <Form name="bookingForm">
-            <Table columns={columns} dataSource={data} bordered />
+            <Table
+              columns={columns}
+              dataSource={data}
+              bordered
+              pagination={false}
+            />
           </Form>
+          <div className="mt-5">
+            <span className="text-2xl font-bold">Reviews</span>
+            <div className="flex flex-col gap-2">
+              {hotelData.data?.reviews?.map((review) => (
+                <Review {...review} />
+              ))}
+            </div>
+          </div>
         </div>
       </Form.Provider>
     </Skeleton>
