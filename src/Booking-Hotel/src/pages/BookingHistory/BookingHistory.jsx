@@ -56,28 +56,15 @@ const PAST_BOOKINGS = [
 
 export default function BookingHistory() {
   return (
-    <>
-      <div>
-        <h2 className="text-3xl text-mainColor-200 font-bold mb-5">
-          Current Booking
-        </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {CURRENT_BOOKINGS.map((booking) => (
-            <BookingCard data={booking} isBooking />
-          ))}
-        </div>
+    <div>
+      <h2 className="text-3xl text-mainColor-200 font-bold mb-5">
+        Current Booking
+      </h2>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {CURRENT_BOOKINGS.map((booking) => (
+          <BookingCard data={booking} />
+        ))}
       </div>
-
-      <div className="mb-[16px]">
-        <h2 className="text-3xl text-mainColor-200 font-bold mt-10 mb-5">
-          Your Past Booking
-        </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {PAST_BOOKINGS.map((booking) => (
-            <BookingCard data={booking} />
-          ))}
-        </div>
-      </div>
-    </>
+    </div>
   );
 }

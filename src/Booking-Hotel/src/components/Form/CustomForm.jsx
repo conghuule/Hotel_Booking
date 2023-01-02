@@ -10,6 +10,7 @@ export default function CustomForm({
   onChange,
   schema,
   defaultValues,
+  formWrapper,
   ...props
 }) {
   const [form] = useForm();
@@ -26,7 +27,7 @@ export default function CustomForm({
     form.setFieldsValue(defaultValues);
   }, [form, defaultValues]);
 
-  return (
+  return !formWrapper ? (
     <Form.Provider onFormFinish={onFormFinish} onFormChange={onFormChange}>
       <Form
         form={form}
@@ -56,5 +57,23 @@ export default function CustomForm({
         ))}
       </Form>
     </Form.Provider>
+  ) : (
+    schema?.map((item, index) => (
+      <Form.Item
+        className="mb-5"
+        key={index}
+        name={item.name}
+        label={item.label}
+        rules={[
+          {
+            required: item.required,
+            message: item.mess ? item.mess : '* ' + item.label + ' is required',
+            ...item.rules,
+          },
+        ]}
+      >
+        <CustomInput type={item.type} name={item.name} {...item} />
+      </Form.Item>
+    ))
   );
 }

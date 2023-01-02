@@ -101,6 +101,7 @@ export default function CustomInput({
           value={value}
           onChange={onChange}
           options={options}
+          disabled={disabled}
         />
       ) : type === 'time' ? (
         <TimePicker

@@ -1,4 +1,5 @@
 import { Button, Form } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 import CustomForm from 'components/Form/CustomForm';
 import ImageUpload from 'components/ImageUpload/ImageUpload';
 import notify from 'components/notify';
@@ -11,10 +12,15 @@ export default function UserProfile() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const [userData, setUserData] = useState();
+  const [form] = useForm();
 
   useEffect(() => {
     getData({ docName: 'users', id: user.uid }).then((res) => setUserData(res));
   }, [user]);
+
+  useEffect(() => {
+    form.setFieldsValue({ ...userData });
+  }, [form, userData]);
 
   const schema = [
     {
@@ -52,6 +58,7 @@ export default function UserProfile() {
       name: 'type',
       label: 'Account Type',
       required: true,
+      disabled: true,
       options: [
         { label: 'Customer', value: 'customer' },
         { label: 'Hotel Owner', value: 'hotelOwner' },
@@ -59,17 +66,18 @@ export default function UserProfile() {
     },
   ];
 
-  const defaultValues = {
-    ...userData,
-  };
-
-  const onSubmit = async ({ avatarForm, infoForm }) => {
-    const infoData = infoForm.getFieldsValue();
-    const avatar = avatarForm.getFieldValue('avatar')?.file;
+  const onSubmit = async ({ profileForm }) => {
+    const infoData = profileForm.getFieldsValue();
+    const avatar = profileForm.getFieldValue('avatar')?.fileList;
 
     try {
-      const avatarURL = avatar
-        ? await addFile({ file: avatar, folder: 'users' })
+      const avatarURL = avatar?.length
+        ? await addFile({
+            file: avatar?.at(-1)?.originFileObj,
+            folder: 'users',
+          })
+        : avatar?.length === 0
+        ? null
         : userData?.avatar;
 
       const submitData = {
@@ -77,17 +85,20 @@ export default function UserProfile() {
         avatar: avatarURL,
       };
 
+      console.log(submitData);
+
       await updateData({ docName: 'users', id: user.uid, data: submitData });
       dispatch(updateProfile(submitData));
       notify({ mess: 'Update profile successful', type: 'success' });
     } catch (error) {
+      console.log(error);
       notify({ mess: 'Update profile failed', type: 'error' });
     }
   };
 
   return (
     <Form.Provider onFormFinish={(_, { forms }) => onSubmit(forms)}>
-      <Form name="avatarForm">
+      <Form form={form} name="profileForm">
         <div className="flex flex-col items-center">
           <h1 className="text-mainColor-200">Profile</h1>
           <div className="flex flex-col gap-5">
@@ -99,11 +110,7 @@ export default function UserProfile() {
               size="md"
             />
             <div className="-mt-10">
-              <CustomForm
-                id="infoForm"
-                schema={schema}
-                defaultValues={defaultValues}
-              />
+              <CustomForm id="infoForm" schema={schema} formWrapper />
             </div>
           </div>
           <Button type="primary" htmlType="submit">
