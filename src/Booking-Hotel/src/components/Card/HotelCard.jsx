@@ -11,7 +11,7 @@ export default function HotelCard({
   specs,
   rooms,
   info,
-  thumbnail,
+  images,
   viewDetail,
 }) {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export default function HotelCard({
   return (
     <div className="max-w-[750px] flex justify-between gap-3 border-2 border-solid border-mainColor-50 rounded-xl p-3">
       <div className="flex gap-4">
-        <img className="w-[175px] h-[175px]" src={thumbnail} alt="" />
+        <img className="w-[175px] h-[175px]" src={images[0]} alt="" />
         <div className="flex flex-col justify-between">
           <div className="flex flex-col">
             <span className="text-xl font-bold text-mainColor-200">{name}</span>

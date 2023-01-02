@@ -67,16 +67,15 @@ export default function Manage({ isUpdate }) {
 
   const onSubmit = async (values) => {
     try {
-      console.log(values.images);
-      const imagesURL = await Promise.all(
-        values.images?.fileList
-          ? values.images?.fileList?.map((image) =>
+      const imagesURL = values.images?.fileList
+        ? await Promise.all(
+            values.images?.fileList?.map((image) =>
               image?.originFileObj
                 ? addFile({ file: image.originFileObj, folder: 'hotels' })
                 : image?.url
             )
-          : []
-      );
+          )
+        : values.images?.map((image) => image.url);
 
       const room_quantity = Object.keys(values)?.filter((v) =>
         v.includes('price')
@@ -100,21 +99,20 @@ export default function Manage({ isUpdate }) {
         reviews: [],
         room_available_quantity: room_quantity,
         rooms: rooms,
-        thumbnail: imagesURL[0],
       };
       console.log(submitData);
       if (isUpdate) {
-        updateData({ docName: 'hotels', data: submitData, id });
+        await updateData({ docName: 'hotels', data: submitData, id });
       } else {
-        addData({ docName: 'hotels', data: submitData });
+        await addData({ docName: 'hotels', data: submitData });
         const locationData = await getData({
           docName: 'locations',
           id: values.location,
         });
-        updateData({
+        await updateData({
           docName: 'locations',
           id: values.location,
-          data: { hotel_quantity: locationData + 1 },
+          data: { hotel_quantity: locationData.hotel_quantity + 1 },
         });
       }
 
