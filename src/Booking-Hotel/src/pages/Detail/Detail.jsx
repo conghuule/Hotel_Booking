@@ -2,22 +2,31 @@ import {
   Breadcrumb,
   Button,
   Carousel,
+  DatePicker,
   Form,
   InputNumber,
+  List,
   Select,
   Skeleton,
   Table,
+  TimePicker,
 } from 'antd';
+import notify from 'components/notify';
 import Review from 'components/Review';
 import Search from 'components/Search/Search';
+import dayjs from 'dayjs';
+import { Timestamp } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
-import { useParams } from 'react-router-dom';
-import { getData } from 'services/services';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { addData, getData } from 'services/services';
 import { formatCurrency } from 'utils/function';
 
 export default function Detail() {
   const { id } = useParams();
+  const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
   const [hotelData, setHotelData] = useState({ data: {}, isLoading: true });
   const [promotionList, setPromotionList] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -142,10 +151,39 @@ export default function Detail() {
     [hotelData]
   );
 
+  const onSubmit = async (values) => {
+    if (totalPrice === 0) return;
+
+    const submitData = {
+      customer: user.uid,
+      hotel: {
+        address: hotelData.data.address,
+        id: hotelData.data.id,
+        image: hotelData.data.images[0],
+        name: hotelData.data.name,
+      },
+      time_range: {
+        end_date: Timestamp.fromDate(new Date(values.time_range[1])),
+        start_date: Timestamp.fromDate(new Date(values.time_range[0])),
+      },
+      total_price: totalPrice,
+    };
+
+    try {
+      await addData({ docName: 'booking', data: submitData });
+      notify({ mess: 'Booking successful', type: 'success' });
+      navigate('/history');
+    } catch (error) {
+      console.log(error);
+      notify({ mess: 'Booking failed', type: 'error' });
+    }
+  };
+
   return (
     <Skeleton loading={hotelData.isLoading} active>
       <Form.Provider
         onFormChange={(name, info) => onChangeQuantity(info.forms.bookingForm)}
+        onFormFinish={(_, { values }) => onSubmit(values)}
       >
         <div className="mx-5">
           <div className="flex gap-10">
@@ -234,6 +272,19 @@ export default function Detail() {
             </Breadcrumb>
           </div>
           <Form name="bookingForm">
+            <Form.Item
+              rules={[{ required: true, message: 'This field is required' }]}
+              name="time_range"
+              label="Check in, Check out date"
+            >
+              <DatePicker.RangePicker
+                format={'DD/MM/YYYY'}
+                disabledDate={(current) => {
+                  let customDate = dayjs().format('YYYY-MM-DD');
+                  return current && current < dayjs(customDate, 'YYYY-MM-DD');
+                }}
+              />
+            </Form.Item>
             <Table
               columns={columns}
               dataSource={data}
@@ -242,12 +293,14 @@ export default function Detail() {
             />
           </Form>
           <div className="mt-5">
-            <span className="text-2xl font-bold">Reviews</span>
-            <div className="flex flex-col gap-2">
+            <h1 className="text-2xl font-bold">Reviews</h1>
+            <List>
               {hotelData.data?.reviews?.map((review) => (
-                <Review {...review} />
+                <List.Item>
+                  <Review {...review} />
+                </List.Item>
               ))}
-            </div>
+            </List>
           </div>
         </div>
       </Form.Provider>

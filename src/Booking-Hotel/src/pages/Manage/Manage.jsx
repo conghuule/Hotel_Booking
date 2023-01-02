@@ -4,7 +4,7 @@ import notify from 'components/notify';
 import { useEffect, useState } from 'react';
 import { AiFillDelete } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { addData, addFile, getData, updateData } from 'services/services';
 
 export default function Manage({ isUpdate }) {
@@ -12,9 +12,10 @@ export default function Manage({ isUpdate }) {
   const [locationList, setLocationList] = useState([]);
   const [facilities, setFacilities] = useState([]);
   const [roomData, setRoomData] = useState([{}]);
-  const [iniIialImages, setInitialImages] = useState([]);
+  const [initialImages, setInitialImages] = useState([]);
   const [form] = Form.useForm();
   const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
 
   const rules = [
     {
@@ -100,6 +101,7 @@ export default function Manage({ isUpdate }) {
         room_available_quantity: room_quantity,
         rooms: rooms,
       };
+      isUpdate && delete submitData.reviews;
       console.log(submitData);
       if (isUpdate) {
         await updateData({ docName: 'hotels', data: submitData, id });
@@ -120,6 +122,7 @@ export default function Manage({ isUpdate }) {
         mess: isUpdate ? 'Update rooms successful' : 'Create rooms successful',
         type: 'success',
       });
+      navigate('/dashboard');
     } catch (error) {
       console.log(error);
       notify({
@@ -214,7 +217,7 @@ export default function Manage({ isUpdate }) {
             multiple
             size="lg"
             name="images"
-            initialValue={iniIialImages}
+            initialValue={initialImages}
             required
           />
           <Form.Item

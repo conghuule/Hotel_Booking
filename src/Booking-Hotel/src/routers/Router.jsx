@@ -42,7 +42,7 @@ export default function Router() {
           <Route path="manage/:id" element={<Manage isUpdate />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="history" element={<BookingHistory />} />
-          <Route path="add-review" element={<AddReview />} />
+          <Route path="add-review/:id" element={<AddReview />} />
         </Route>
         <Route element={<AuthRoute />}>
           <Route path="signin" element={<SignIn />} />

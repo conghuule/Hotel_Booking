@@ -50,6 +50,7 @@ export default function Header() {
     }
     if (e.key === 'signout') {
       dispatch(signout());
+      navigate('');
     }
   };
 

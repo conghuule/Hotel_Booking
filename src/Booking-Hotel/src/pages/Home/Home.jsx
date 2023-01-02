@@ -29,7 +29,7 @@ export default function Home() {
     //get hotel list
     getData({
       docName: 'hotels',
-      limitNumber: 5,
+      limitNumber: 10,
     }).then((res) => setHotelList({ data: res, isLoading: false }));
 
     //get hotel list
