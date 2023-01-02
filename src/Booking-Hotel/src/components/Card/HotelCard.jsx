@@ -12,32 +12,39 @@ export default function HotelCard({
   rooms,
   info,
   thumbnail,
-  isViewDetail,
+  viewDetail,
 }) {
   const navigate = useNavigate();
 
   return (
     <div className="max-w-[750px] flex justify-between gap-3 border-2 border-solid border-mainColor-50 rounded-xl p-3">
-      <div className="">
+      <div className="flex gap-4">
         <img className="w-[175px] h-[175px]" src={thumbnail} alt="" />
-      </div>
-      <div className="flex flex-col justify-between">
-        <div className="flex flex-col">
-          <span className="text-xl font-bold text-mainColor-200">{name}</span>
-          <span className="">
-            {address} -{' '}
-            <Link className="no-underline text-mainColor-150">Show on map</Link>
-          </span>
-        </div>
-        <div className="">
-          <Breadcrumb separator="•">
-            {specs?.map((spec, index) => (
-              <Breadcrumb.Item key={index}>{spec}</Breadcrumb.Item>
-            ))}
-          </Breadcrumb>
-          <span className="font-bold text-red-500">
-            Only {room_available_quantity} room left at this price on our site
-          </span>
+        <div className="flex flex-col justify-between">
+          <div className="flex flex-col">
+            <span className="text-xl font-bold text-mainColor-200">{name}</span>
+            <span className="">
+              {address} -{' '}
+              <a
+                className="no-underline text-mainColor-150"
+                href={`https://google.com/maps/search/${address}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Show on map
+              </a>
+            </span>
+          </div>
+          <div className="">
+            <Breadcrumb separator="•">
+              {specs?.map((spec, index) => (
+                <Breadcrumb.Item key={index}>{spec}</Breadcrumb.Item>
+              ))}
+            </Breadcrumb>
+            <span className="font-bold text-red-500">
+              Only {room_available_quantity} room left at this price on our site
+            </span>
+          </div>
         </div>
       </div>
       <div className="flex flex-col justify-between ml-2">
@@ -50,7 +57,7 @@ export default function HotelCard({
               : 0}
           </div>
         </div>
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end w-40">
           {info && (
             <span className="text-sm opacity-50">
               {info?.days} nights, {info?.peoples} adults
@@ -65,9 +72,7 @@ export default function HotelCard({
             type="primary"
             block
             onClick={() =>
-              isViewDetail
-                ? navigate(`/detail/${id}`)
-                : navigate(`/manage/${id}`)
+              viewDetail ? navigate(`/detail/${id}`) : navigate(`/manage/${id}`)
             }
           >
             See more

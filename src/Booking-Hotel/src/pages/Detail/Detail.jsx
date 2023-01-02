@@ -12,7 +12,7 @@ import Review from 'components/Review';
 import Search from 'components/Search/Search';
 import { useEffect, useMemo, useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getData } from 'services/services';
 import { formatCurrency } from 'utils/function';
 
@@ -101,7 +101,7 @@ export default function Detail() {
           <div className="flex flex-col">
             <span className="font-bold">{formatCurrency(totalPrice)}</span>
             <span className="text-red-400">
-              -{formatCurrency(discountAmount)}
+              -{totalPrice !== 0 ? formatCurrency(discountAmount) : 0}
             </span>
             <span className="opacity-50">Includes taxes and fees</span>
           </div>
@@ -164,9 +164,14 @@ export default function Detail() {
               </div>
               <span className="">
                 {hotelData.data?.address} -{' '}
-                <Link className="no-underline text-mainColor-150">
+                <a
+                  className="no-underline text-mainColor-150"
+                  href={`https://google.com/maps/search/${hotelData.data?.address}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Show on map
-                </Link>
+                </a>
               </span>
               <Carousel autoplay>
                 {hotelData.data?.images?.map((image) => (

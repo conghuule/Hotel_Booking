@@ -1,12 +1,4 @@
-import {
-  Breadcrumb,
-  Button,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  Table,
-} from 'antd';
+import { Button, Form, Input, InputNumber, Select, Table } from 'antd';
 import ImageUpload from 'components/ImageUpload/ImageUpload';
 import notify from 'components/notify';
 import { useEffect, useState } from 'react';
@@ -24,36 +16,44 @@ export default function Manage({ isUpdate }) {
   const [form] = Form.useForm();
   const user = useSelector((state) => state.auth.user);
 
+  const rules = [
+    {
+      required: true,
+      message: 'This field is required',
+    },
+  ];
+
   useEffect(() => {
-    getData({
-      docName: 'hotels',
-      id,
-    }).then((res) => {
-      const imagesURL = res.images?.map((image) => ({ url: image }));
-      const roomsData = res.rooms?.reduce(
-        (obj, room, index) => ({
-          ...obj,
-          [`roomName-${index}`]: room.name,
-          [`price-${index}`]: room.price,
-          [`roomFacilities-${index}`]: room.facilities,
-        }),
-        {}
-      );
+    isUpdate &&
+      getData({
+        docName: 'hotels',
+        id,
+      }).then((res) => {
+        const imagesURL = res.images?.map((image) => ({ url: image }));
+        const roomsData = res.rooms?.reduce(
+          (obj, room, index) => ({
+            ...obj,
+            [`roomName-${index}`]: room.name,
+            [`price-${index}`]: room.price,
+            [`roomFacilities-${index}`]: room.facilities,
+          }),
+          {}
+        );
 
-      setRoomData(res.rooms?.map(() => ({})));
-      setInitialImages(imagesURL);
+        setRoomData(res.rooms ? res.rooms?.map(() => ({})) : []);
+        setInitialImages(imagesURL);
 
-      form.setFieldsValue({
-        address: res.address,
-        desc: res.desc,
-        facilities: res.facilities,
-        images: imagesURL,
-        location: res.location,
-        name: res.name,
-        ...roomsData,
+        form.setFieldsValue({
+          address: res.address,
+          desc: res.desc,
+          facilities: res.facilities,
+          images: imagesURL,
+          location: res.location,
+          name: res.name,
+          ...roomsData,
+        });
       });
-    });
-  }, [form, id]);
+  }, [form, id, isUpdate]);
 
   useEffect(() => {
     getData({ docName: 'facilities' }).then((res) =>
@@ -67,11 +67,15 @@ export default function Manage({ isUpdate }) {
 
   const onSubmit = async (values) => {
     try {
+      console.log(values.images);
       const imagesURL = await Promise.all(
-        values.images?.fileList &&
-          values.images?.fileList?.map((image) =>
-            addFile({ file: image.originFileObj, folder: 'hotels' })
-          )
+        values.images?.fileList
+          ? values.images?.fileList?.map((image) =>
+              image?.originFileObj
+                ? addFile({ file: image.originFileObj, folder: 'hotels' })
+                : image?.url
+            )
+          : []
       );
 
       const room_quantity = Object.keys(values)?.filter((v) =>
@@ -79,7 +83,7 @@ export default function Manage({ isUpdate }) {
       )?.length;
       const rooms = Array(room_quantity)
         .fill()
-        .map((_, index) => ({
+        ?.map((_, index) => ({
           name: values[`roomName-${index}`],
           price: values[`price-${index}`],
           facilities: values[`roomFacilities-${index}`],
@@ -98,14 +102,32 @@ export default function Manage({ isUpdate }) {
         rooms: rooms,
         thumbnail: imagesURL[0],
       };
-      isUpdate
-        ? updateData({ docName: 'hotels', data: submitData, id })
-        : addData({ docName: 'hotels', data: submitData });
+      console.log(submitData);
+      if (isUpdate) {
+        updateData({ docName: 'hotels', data: submitData, id });
+      } else {
+        addData({ docName: 'hotels', data: submitData });
+        const locationData = await getData({
+          docName: 'locations',
+          id: values.location,
+        });
+        updateData({
+          docName: 'locations',
+          id: values.location,
+          data: { hotel_quantity: locationData + 1 },
+        });
+      }
 
-      notify({ mess: 'Create rooms successful', type: 'success' });
+      notify({
+        mess: isUpdate ? 'Update rooms successful' : 'Create rooms successful',
+        type: 'success',
+      });
     } catch (error) {
       console.log(error);
-      notify({ mess: 'Create rooms failed', type: 'error' });
+      notify({
+        mess: isUpdate ? 'Update rooms failed' : 'Create rooms failed',
+        type: 'error',
+      });
     }
   };
 
@@ -116,10 +138,10 @@ export default function Manage({ isUpdate }) {
       onHeaderCell: () => ({ className: 'bg-mainColor-200 text-white' }),
       render: (_, { name, facilities: defaultFacilities }, index) => (
         <div className="flex flex-col gap-2">
-          <Form.Item name={`roomName-${index}`} noStyle>
+          <Form.Item name={`roomName-${index}`} noStyle rules={rules}>
             <Input placeholder="Room name" />
           </Form.Item>
-          <Form.Item name={`roomFacilities-${index}`} noStyle>
+          <Form.Item name={`roomFacilities-${index}`} noStyle rules={rules}>
             <Select
               placeholder="Facilities"
               mode="multiple"
@@ -139,7 +161,7 @@ export default function Manage({ isUpdate }) {
       dataIndex: 'price',
       onHeaderCell: () => ({ className: 'bg-mainColor-200 text-white' }),
       render: (text, _, index) => (
-        <Form.Item name={`price-${index}`} noStyle>
+        <Form.Item name={`price-${index}`} noStyle rules={rules}>
           <InputNumber
             className="w-full"
             formatter={(value) => value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
@@ -195,22 +217,26 @@ export default function Manage({ isUpdate }) {
             size="lg"
             name="images"
             initialValue={iniIialImages}
+            required
           />
           <Form.Item
             name="name"
             label={<span className="text-lg font-bold">Hotel name</span>}
+            rules={rules}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="address"
             label={<span className="text-lg font-bold">Address</span>}
+            rules={rules}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="location"
             label={<span className="text-lg font-bold">Location</span>}
+            rules={rules}
           >
             <Select
               showSearch
@@ -224,6 +250,7 @@ export default function Manage({ isUpdate }) {
           <Form.Item
             name="desc"
             label={<span className="text-lg font-bold">Description</span>}
+            rules={rules}
           >
             <Input.TextArea autoSize={{ minRows: 6 }} showCount />
           </Form.Item>
@@ -232,6 +259,7 @@ export default function Manage({ isUpdate }) {
             label={
               <span className="text-lg font-bold">Most popular facilities</span>
             }
+            rules={rules}
           >
             <Select
               placeholder="Facilities"

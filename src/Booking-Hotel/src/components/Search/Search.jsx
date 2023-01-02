@@ -22,7 +22,7 @@ export default function Search({ vertical, ...props }) {
       name="searchForm"
       form={form}
     >
-      <Form.Item className={'m-0'} name="dest">
+      <Form.Item className={'m-0'} name="dest" initialValue="Ho Chi Minh City">
         <Select
           className={vertical ? 'w-full' : 'w-[150px]'}
           showSearch
