@@ -55,7 +55,7 @@ export default function SearchResult() {
 
           <Skeleton loading={hotelList.isLoading} acitve>
             {hotelList.data?.map((hotel) => (
-              <HotelCard {...hotel} key={hotel.id} />
+              <HotelCard {...hotel} key={hotel.id} viewDetail />
             ))}
           </Skeleton>
         </div>
