@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { formatCurrency } from 'utils/function';
 
 export default function BookingCard({ data }) {
-  const { hotel, time_range, total_price } = data;
+  const { hotel, time_range, total_price, id, already_reviewed } = data;
   const navigate = useNavigate();
 
   return (
@@ -39,9 +39,13 @@ export default function BookingCard({ data }) {
             size="large"
             type="primary"
             className="min-w-[140px]"
-            onClick={() => navigate(`/add-review/${hotel?.id}`)}
+            onClick={() =>
+              !already_reviewed &&
+              navigate(`/add-review/${hotel?.id}`, { state: { id } })
+            }
+            disabled={already_reviewed}
           >
-            Add review
+            {already_reviewed ? 'Reviewed' : 'Add review'}
           </Button>
         </div>
       </div>

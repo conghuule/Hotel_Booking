@@ -3,7 +3,7 @@ import TextArea from 'antd/es/input/TextArea';
 import notify from 'components/notify';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getData, updateData } from 'services/services';
 
 export default function AddReview() {
@@ -11,6 +11,15 @@ export default function AddReview() {
   const user = useSelector((state) => state.auth.user);
   const [hotelData, setHotelData] = useState({ data: {}, isLoading: true });
   const navigate = useNavigate();
+  const location = useLocation();
+  const rules = [
+    {
+      required: true,
+      message: 'This field is required',
+    },
+  ];
+
+  console.log(location.state.id);
 
   useEffect(() => {
     getData({
@@ -21,7 +30,7 @@ export default function AddReview() {
     });
   }, [id]);
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     const submitData = {
       ...hotelData.data,
       reviews: [
@@ -35,11 +44,20 @@ export default function AddReview() {
     };
 
     try {
-      updateData({
+      await updateData({
         docName: 'hotels',
         id,
         data: submitData,
       });
+
+      await updateData({
+        docName: 'booking',
+        id: location.state.id,
+        data: {
+          already_reviewed: true,
+        },
+      });
+
       notify({ mess: 'Add review successful', type: 'success' });
       navigate('/history');
     } catch (error) {
@@ -82,7 +100,7 @@ export default function AddReview() {
               <span className="text-xl font-bold text-mainColor-200 mr-[16px]">
                 Your Rating
               </span>
-              <Form.Item name="rating" noStyle>
+              <Form.Item name="rating" noStyle rules={rules}>
                 <Rate defaultValue={0} />
               </Form.Item>
             </div>
@@ -93,7 +111,7 @@ export default function AddReview() {
                   Detailed Review
                 </h3>
               </div>
-              <Form.Item name="review">
+              <Form.Item name="review" rules={rules}>
                 <TextArea rows={6} showCount maxLength={300} />
               </Form.Item>
             </div>

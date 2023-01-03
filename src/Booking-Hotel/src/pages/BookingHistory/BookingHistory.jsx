@@ -1,3 +1,4 @@
+import { Skeleton } from 'antd';
 import BookingCard from 'components/Card/BookingCard';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -14,20 +15,18 @@ export default function BookingHistory() {
     }).then((res) => setBookingList({ data: res, isLoading: false }));
   }, [user]);
 
-  useEffect(() => {
-    console.log(bookingList);
-  }, [bookingList]);
-
   return (
     <div>
       <h2 className="text-3xl text-mainColor-200 font-bold mb-5">
         Recent Booking
       </h2>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {bookingList.data?.map((booking) => (
-          <BookingCard data={booking} />
-        ))}
-      </div>
+      <Skeleton loading={bookingList.isLoading} active>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {bookingList.data?.map((booking) => (
+            <BookingCard data={booking} />
+          ))}
+        </div>
+      </Skeleton>
     </div>
   );
 }

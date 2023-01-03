@@ -166,7 +166,7 @@ export default function Detail() {
         end_date: Timestamp.fromDate(new Date(values.time_range[1])),
         start_date: Timestamp.fromDate(new Date(values.time_range[0])),
       },
-      total_price: totalPrice,
+      total_price: totalPrice - discountAmount,
     };
 
     try {
