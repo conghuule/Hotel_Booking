@@ -246,10 +246,12 @@ export default function Detail() {
                 </span>
                 <div className="p-2 rounded-r-lg rounded-tl-lg rounded-bl-sm bg-mainColor-150 text-white">
                   {hotelData.data?.reviews?.length
-                    ? hotelData.data?.reviews?.reduce(
-                        (total, review) => total + review.rating,
-                        0
-                      ) / hotelData.data?.reviews?.length
+                    ? (
+                        hotelData.data?.reviews?.reduce(
+                          (total, review) => total + review.rating,
+                          0
+                        ) / hotelData.data?.reviews?.length
+                      ).toPrecision(2)
                     : 0}
                 </div>
               </div>

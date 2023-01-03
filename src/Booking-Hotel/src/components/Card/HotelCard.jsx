@@ -52,8 +52,10 @@ export default function HotelCard({
           <span className="text-md">{reviews?.length} reviews</span>
           <div className="p-2 rounded-r-lg rounded-tl-lg rounded-bl-sm bg-mainColor-200 text-white">
             {reviews?.length
-              ? reviews?.reduce((total, review) => total + review.rating, 0) /
-                reviews?.length
+              ? (
+                  reviews?.reduce((total, review) => total + review.rating, 0) /
+                  reviews?.length
+                ).toPrecision(2)
               : 0}
           </div>
         </div>
