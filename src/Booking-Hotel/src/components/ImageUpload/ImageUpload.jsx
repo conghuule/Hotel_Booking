@@ -51,6 +51,7 @@ const ImageUpload = ({
           fileList={fileList}
           onChange={onChange}
           onRemove={onRemove}
+          accept="image/*"
         >
           <div className="upload-btn">
             <AiOutlineUpload size={24} />
