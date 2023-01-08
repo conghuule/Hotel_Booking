@@ -28,6 +28,9 @@ const AuthRoute = () => {
 };
 
 export default function Router() {
+  const user = useSelector((state) => state.auth.user);
+  const userType = user?.data?.type;
+
   return (
     <Routes>
       <Route element={<MainLayout />}>
@@ -38,11 +41,21 @@ export default function Router() {
         <Route element={<PrivateRoute />}>
           <Route path="profile" element={<UserProfile />} />
           <Route path="payment" element={<Payment />} />
-          <Route path="manage" element={<Manage />} />
-          <Route path="manage/:id" element={<Manage isUpdate />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="history" element={<BookingHistory />} />
-          <Route path="add-review/:id" element={<AddReview />} />
+          {userType === 'hotelOwner' && (
+            <Route path="manage" element={<Manage />} />
+          )}
+          {userType === 'hotelOwner' && (
+            <Route path="manage/:id" element={<Manage isUpdate />} />
+          )}
+          {userType === 'hotelOwner' && (
+            <Route path="dashboard" element={<Dashboard />} />
+          )}
+          {userType === 'customer' && (
+            <Route path="history" element={<BookingHistory />} />
+          )}
+          {userType === 'customer' && (
+            <Route path="add-review/:id" element={<AddReview />} />
+          )}
         </Route>
         <Route element={<AuthRoute />}>
           <Route path="signin" element={<SignIn />} />

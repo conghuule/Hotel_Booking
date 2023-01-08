@@ -139,10 +139,10 @@ export default function Manage({ isUpdate }) {
       onHeaderCell: () => ({ className: 'bg-mainColor-200 text-white' }),
       render: (_, { name, facilities: defaultFacilities }, index) => (
         <div className="flex flex-col gap-2">
-          <Form.Item name={`roomName-${index}`} noStyle rules={rules}>
+          <Form.Item name={`roomName-${index}`} rules={rules}>
             <Input placeholder="Room name" />
           </Form.Item>
-          <Form.Item name={`roomFacilities-${index}`} noStyle rules={rules}>
+          <Form.Item name={`roomFacilities-${index}`} rules={rules}>
             <Select
               placeholder="Facilities"
               mode="multiple"
@@ -162,7 +162,7 @@ export default function Manage({ isUpdate }) {
       dataIndex: 'price',
       onHeaderCell: () => ({ className: 'bg-mainColor-200 text-white' }),
       render: (text, _, index) => (
-        <Form.Item name={`price-${index}`} noStyle rules={rules}>
+        <Form.Item name={`price-${index}`} rules={rules}>
           <InputNumber
             className="w-full"
             formatter={(value) => value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
